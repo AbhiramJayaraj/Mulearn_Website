@@ -45,7 +45,15 @@
   <div class="logo-container">
     <img src="images/M_bg.png" alt="µLearn CHN" class="logo-img">
   </div>
-  <nav class="header-nav">
+
+  <!-- Mobile nav toggle -->
+  <button class="nav-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="site-nav">
+    <span class="bar"></span>
+    <span class="bar"></span>
+    <span class="bar"></span>
+  </button>
+
+  <nav id="site-nav" class="header-nav" role="navigation">
     <a href="#home">Home</a>
     <a href="#about">About</a>
     <a href="#events">Events</a>
@@ -53,7 +61,6 @@
     <a href="#team">Team</a>
     <a href="#connect">Contact</a>
     <a href="join.html" class="join-btn">Join µLearn</a>
-
   </nav>
 </header>
 
@@ -186,6 +193,10 @@
       preview.style.left = Math.round(left) + 'px';
     }
 
+    function isMobile() {
+      return window.innerWidth <= 768;
+    }
+
     glasses.forEach(glass => {
       glass.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -197,7 +208,6 @@
         titleEl.textContent = glass.dataset.title;
         descEl.textContent = glass.dataset.desc;
 
-        // Determine side: if mission is on left, preview goes to right, and vice versa
         const mission = glass.closest('.mission');
         const isLeft = mission.classList.contains('left');
 
@@ -205,16 +215,38 @@
         preview.classList.remove('from-left', 'from-right');
         preview.classList.add(isLeft ? 'from-right' : 'from-left');
 
-        // Position and show
-        // Ensure layout measurement is up-to-date before positioning
-        preview.classList.remove('active');
-        preview.style.top = '';
-        preview.style.left = '';
-        // Small timeout to allow layout (and CSS transforms) to stabilise
-        requestAnimationFrame(() => {
-          positionPreview(mission, isLeft ? 'right' : 'left');
+        // Mobile behaviour: overlay preview on top of the clicked mission
+        if (isMobile()) {
+          // ensure mission is positioned
+          mission.style.position = mission.style.position || 'relative';
+
+          // move preview into mission and style as overlay
+          if (preview.parentElement !== mission) {
+            mission.appendChild(preview);
+          }
+
+          preview.classList.add('mobile-overlay');
           preview.classList.add('active');
-        });
+          preview.style.top = '50%';
+          preview.style.left = '50%';
+          preview.style.transform = 'translate(-50%, -50%) scale(1)';
+          preview.style.pointerEvents = 'auto';
+          preview.style.width = '90%';
+        } else {
+          // Desktop: keep existing behaviour (floating aside)
+          if (preview.parentElement !== document.body && preview.parentElement !== eventsSection) {
+            document.body.appendChild(preview);
+          }
+
+          preview.classList.remove('mobile-overlay');
+          preview.classList.remove('active');
+          preview.style.top = '';
+          preview.style.left = '';
+          requestAnimationFrame(() => {
+            positionPreview(mission, isLeft ? 'right' : 'left');
+            preview.classList.add('active');
+          });
+        }
       });
     });
 
@@ -223,16 +255,30 @@
 
     // Close on outside click or on escape
     document.addEventListener('click', () => {
-      preview.classList.remove('active', 'from-left', 'from-right');
+      preview.classList.remove('active', 'from-left', 'from-right', 'mobile-overlay');
       glasses.forEach(g => g.classList.remove('active'));
       preview.style.top = '';
       preview.style.left = '';
+
+      // move preview back to body to keep layout predictable
+      if (preview.parentElement !== document.body) {
+        document.body.appendChild(preview);
+      }
     });
 
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         document.dispatchEvent(new Event('click'));
       }
+    });
+
+    // MOBILE NAV TOGGLE
+    const navToggle = document.querySelector('.nav-toggle');
+    const siteNav = document.getElementById('site-nav');
+    navToggle && navToggle.addEventListener('click', () => {
+      const expanded = navToggle.getAttribute('aria-expanded') === 'true';
+      navToggle.setAttribute('aria-expanded', String(!expanded));
+      siteNav.classList.toggle('open');
     });
   })();
 </script>
