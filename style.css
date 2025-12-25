@@ -2333,3 +2333,114 @@ header {
     box-shadow 0.4s ease;
   transform: scale(1);
 }
+
+
+
+
+/* ===================================================
+   MOBILE RESPONSIVE FIX (µVerse)
+   =================================================== */
+
+@media (max-width: 768px) {
+
+  /* GLOBAL */
+  body {
+    overflow-x: hidden;
+  }
+
+  section {
+    padding: 70px 18px;
+  }
+
+  h1 {
+    font-size: 2.2rem;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+  }
+
+  /* HEADER */
+  .header-inner {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .header-nav {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px 14px;
+  }
+
+  .header-nav a {
+    font-size: 0.85rem;
+  }
+
+  /* HERO / PLANET */
+  .planet {
+    width: 260px;
+    height: 260px;
+    top: 18%;
+    opacity: 0.55;
+  }
+
+  /* EVENT JOURNEY */
+  #events {
+    overflow: hidden;
+  }
+
+  .mission {
+    width: 100% !important;
+    left: 0 !important;
+    text-align: center !important;
+  }
+
+  .mission-glass {
+    margin: 0 auto 32px;
+    transform: none !important;
+  }
+
+  /* EVENT PREVIEW → STACKED BELOW */
+  .event-preview {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+
+    margin: 20px auto 0;
+    width: 100%;
+    max-width: 340px;
+
+    transform: none !important;
+  }
+
+  /* MEMORIES */
+  #memories {
+    overflow: hidden;
+  }
+
+  .memory-glass {
+    position: relative !important;
+    transform: none !important;
+    margin: 24px auto;
+  }
+
+  .memory-glass.is-center {
+    transform: scale(1.05) !important;
+  }
+
+  /* TEAM */
+  .crew-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+  }
+
+  .footer-links {
+    flex-direction: column;
+    gap: 14px;
+  }
+}
