@@ -2442,6 +2442,50 @@ header {
 /* Ensure mission is a positioned container for absolute overlay */
 .mission { position: relative; }
 
+/* Mobile timeline two-column override: keep left/right appearance but single central line */
+@media (max-width: 768px) {
+  .timeline-container {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: auto;
+    gap: 18px 12px;
+    padding: 0 12px;
+    align-items: start;
+  }
+
+  /* keep the center timeline line centered between the two columns */
+  .timeline-container .timeline-line,
+  .timeline-line {
+    left: 50% !important;
+    transform: translateX(-50%);
+  }
+
+  .timeline-container .mission {
+    width: 100% !important;
+    position: relative !important;
+    padding: 8px 6px !important;
+    margin: 0 !important;
+    box-sizing: border-box;
+  }
+
+  /* place odd/even missions in left/right columns respectively */
+  .timeline-container .mission:nth-child(odd) { grid-column: 1; text-align: right; padding-right: 12px; }
+  .timeline-container .mission:nth-child(even) { grid-column: 2; text-align: left; padding-left: 12px; }
+
+  /* scale down glass images to fit the narrow columns */
+  .timeline-container .mission .mission-glass {
+    width: 100%;
+    max-width: 220px;
+    height: auto;
+    margin: 0 auto;
+  }
+
+  /* ensure preview overlay remains contained to the mission */
+  .event-preview.mobile-overlay {
+    width: 92% !important;
+  }
+}
+
 
 
 
