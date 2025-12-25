@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>µVerse – µLearn CHN</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <script>
+    // Prevent automatic jump to the events section when page loads with #events
+    if (location.hash === '#events') {
+      history.replaceState(null, '', location.pathname + location.search);
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome Icons (ADD THIS HERE) -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  />
+
+  <!-- Your Main CSS -->
+  <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+<!-- SPACE BACKGROUND (ALWAYS BEHIND) -->
+<div class="space-system">
+  <div class="stars"></div>
+  <div class="stars slow"></div>
+
+  <div class="planet">
+    <div class="planet-grid"></div>
+  </div>
+
+  <div class="orbit orbit-1"></div>
+  <div class="orbit orbit-2"></div>
+</div>
+
+<!-- NAVBAR -->
+<header class="navbar">
+  <div class="logo-container">
+    <img src="images/M_bg.png" alt="µLearn CHN" class="logo-img">
+  </div>
+  <nav class="header-nav">
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#events">Events</a>
+    <a href="#memories">Gallery</a>
+    <a href="#team">Team</a>
+    <a href="#connect">Contact</a>
+    <a href="join.html" class="join-btn">Join µLearn</a>
+
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero reveal">
+  <h1>Welcome to the<br><span>µVerse</span></h1>
+  <p class="subtitle">College of Engineering Chengannur</p>
+
+  
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="section glass reveal">
+  <h2>About Us</h2>
+  <p class="center">
+    µLearn CHN is a dynamic community powered by GTech, dedicated to fostering
+    growth through mutual learning. We bring together curious minds to explore
+    new ideas, develop skills, and collaborate on innovative projects.
+    Our community thrives on peer learning, mentorship, and hands-on
+    experiences, empowering individuals to grow both personally and
+    professionally. Join us and be part of a movement that transforms learning
+    into action!
+  </p>
+</section>
+
+<!-- EVENTS (TIMELINE) -->
+<section id="events" class="section timeline">
+  <h2 class="section-title">Our Event Journey</h2>
+
+  <div class="timeline-container">
+
+    <!-- Center line -->
+    <div class="timeline-line"></div>
+
+    <!-- Event 1 (LEFT) -->
+    <div class="mission left">
+      <div class="mission-glass"
+           data-title="Make(Me)²"
+           data-date="Mar 9–16"
+           data-desc="Meme-making competition for Women's Day.">
+        <img src="images/MAKE(ME).webp" alt="Make(Me)²">
+      </div>
+    </div>
+
+    <!-- Event 2 (RIGHT) -->
+    <div class="mission right">
+      <div class="mission-glass"
+           data-title="Change the Look"
+           data-date="Mar 7–15"
+           data-desc="Poster design challenge focused on creativity.">
+        <img src="images/Change the Look.webp" alt="Change the Look">
+      </div>
+    </div>
+
+    <!-- Event 3 (LEFT) -->
+    <div class="mission left">
+      <div class="mission-glass"
+           data-title="Introduction to Figma"
+           data-date="Mar 5–6"
+           data-desc="Hands-on UI/UX workshop using Figma.">
+        <img src="images/Introduction to Figma.webp" alt="Introduction to Figma">
+      </div>
+    </div>
+
+    <!-- Event 4 (RIGHT) -->
+    <div class="mission right">
+      <div class="mission-glass"
+           data-title="µQUEST"
+           data-date="Mar 5"
+           data-desc="Interactive quiz challenge.">
+        <img src="images/MuQuest.jpeg" alt="µQUEST">
+      </div>
+    </div>
+
+    <!-- Event 5 (LEFT) -->
+    <div class="mission left">
+      <div class="mission-glass"
+           data-title="Karma Fest"
+           data-date="Jan 29–30"
+           data-desc="2-day onboarding & Discord engagement event.">
+        <img src="images/Karma_Fest.jpeg" alt="Karma Fest">
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Floating Preview Panel -->
+  <div id="event-preview" class="event-preview">
+    <span class="preview-date"></span>
+    <h3 class="preview-title"></h3>
+    <p class="preview-desc"></p>
+  </div>
+</section>
+
+
+
+<!-- Event Journey script -->
+<script>
+  (function() {
+    const glasses = document.querySelectorAll('.mission-glass');
+    const preview = document.getElementById('event-preview');
+    const eventsSection = document.getElementById('events');
+
+    const dateEl = preview.querySelector('.preview-date');
+    const titleEl = preview.querySelector('.preview-title');
+    const descEl = preview.querySelector('.preview-desc');
+
+    function positionPreview(missionElem, side) {
+      const eventsRect = eventsSection.getBoundingClientRect();
+      const missionRect = missionElem.getBoundingClientRect();
+      const previewRect = preview.getBoundingClientRect();
+
+      // Vertical center aligned to mission
+      let top = missionRect.top - eventsRect.top + (missionRect.height / 2) - (previewRect.height / 2);
+
+      // Horizontal: place preview outside the mission box
+      let left;
+      const gap = 14; // spacing between mission and preview
+      if (side === 'right') {
+        left = missionRect.right - eventsRect.left + gap;
+      } else {
+        left = missionRect.left - eventsRect.left - previewRect.width - gap;
+      }
+
+      // Clamp vertical so it doesn't overflow the events section
+      const maxTop = eventsSection.clientHeight - previewRect.height - 8;
+      top = Math.max(8, Math.min(top, maxTop));
+
+      preview.style.top = Math.round(top) + 'px';
+      preview.style.left = Math.round(left) + 'px';
+    }
+
+    glasses.forEach(glass => {
+      glass.addEventListener('click', (e) => {
+        e.stopPropagation();
+
+        glasses.forEach(g => g.classList.remove('active'));
+        glass.classList.add('active');
+
+        dateEl.textContent = glass.dataset.date;
+        titleEl.textContent = glass.dataset.title;
+        descEl.textContent = glass.dataset.desc;
+
+        // Determine side: if mission is on left, preview goes to right, and vice versa
+        const mission = glass.closest('.mission');
+        const isLeft = mission.classList.contains('left');
+
+        // Reset animation classes then add the appropriate one
+        preview.classList.remove('from-left', 'from-right');
+        preview.classList.add(isLeft ? 'from-right' : 'from-left');
+
+        // Position and show
+        // Ensure layout measurement is up-to-date before positioning
+        preview.classList.remove('active');
+        preview.style.top = '';
+        preview.style.left = '';
+        // Small timeout to allow layout (and CSS transforms) to stabilise
+        requestAnimationFrame(() => {
+          positionPreview(mission, isLeft ? 'right' : 'left');
+          preview.classList.add('active');
+        });
+      });
+    });
+
+    // Prevent clicks inside preview from closing it
+    preview.addEventListener('click', (e) => e.stopPropagation());
+
+    // Close on outside click or on escape
+    document.addEventListener('click', () => {
+      preview.classList.remove('active', 'from-left', 'from-right');
+      glasses.forEach(g => g.classList.remove('active'));
+      preview.style.top = '';
+      preview.style.left = '';
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.dispatchEvent(new Event('click'));
+      }
+    });
+  })();
+</script>
+
+
+
+
+
+
+
+<!-- MEMORIES -->
+<section id="memories" class="section glass split reveal">
+  <h2 class="memories-title">Memories</h2>
+
+  <div class="memories-container">
+    <div class="memory-glass memory-top-left" style="background-image: url('images/M1.jpeg');"></div>
+    <div class="memory-glass memory-top-center" style="background-image: url('images/M2.jpeg');"></div>
+    <div class="memory-glass memory-top-right" style="background-image: url('images/M3.jpeg');"></div>
+    <div class="memory-glass memory-middle-left" style="background-image: url('images/M4.jpeg');"></div>
+    <div class="memory-glass memory-center" style="background-image: url('images/M5.jpeg');"></div>
+    <div class="memory-glass memory-middle-right" style="background-image: url('images/M6.jpeg');"></div>
+    <div class="memory-glass memory-bottom-left" style="background-image: url('images/M7.jpeg');"></div>
+    <div class="memory-glass memory-bottom-center" style="background-image: url('images/M8.jpeg');"></div>
+    <div class="memory-glass memory-bottom-right" style="background-image: url('images/M9.jpeg');"></div>
+    <div class="memory-glass memory-bottom-center" style="background-image: url('images/M10.jpeg');"></div>
+    <div class="memory-glass memory-bottom-right" style="background-image: url('images/M11.jpeg');"></div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats">
+  <h2 class="stats-title">Our Statistics</h2>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <span class="stat-number">152+</span>
+      <span class="stat-label">Students Enrolled</span>
+    </div>
+
+    <div class="stat">
+      <span class="stat-number">0</span>
+      <span class="stat-label">Learning Circles</span>
+    </div>
+
+    <div class="stat">
+      <span class="stat-number">3+</span>
+      <span class="stat-label">Interest Groups</span>
+    </div>
+
+    <div class="stat">
+      <span class="stat-number">429k+</span>
+      <span class="stat-label">Karma Mined</span>
+    </div>
+
+    <div class="stat rank">
+      <span class="stat-brand">µLearn</span>
+      <span class="stat-rank">Rank : 8</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- LEARNING CIRCLES -->
+<section class="section glass split reveal">
+  <div>
+    <h2>Explore Learning Circles</h2>
+    <p>
+      Informal groups to learn, build, and grow together around shared interests.
+    </p>
+    <a href="circles.html" class="btn">Create / Join</a>
+  </div>
+  <div class="circle-visual"><img src="images/Cartoon_image.png" alt="Learning illustration"></div>
+</section>
+
+<!-- TEAM -->
+<section id="team" class="section reveal">
+  <h2>Our Team</h2>
+  <div class="team-grid">
+    <div class="member">
+      <div class="avatar"><img src="images/member1.jpeg" alt="Member Name"></div>
+      <h4>Geetha S</h4>
+      <span>Lead Enabler</span>
+    </div>
+    <div class="member">
+      <div class="avatar"><img src="images/member2.jpeg" alt="Member Name"></div>
+      <h4>Shijina S</h4>
+      <span>Campus Lead</span>
+    </div>
+    <div class="member">
+      <div class="avatar"><img src="images/member3.jpeg" alt="Member Name"></div>
+      <h4>Nithin Jayakumar</h4>
+      <span>Campus Co-Lead</span>
+    </div>
+    <div class="member">
+      <div class="avatar"><img src="images/member4.jpeg" alt="Member Name"></div>
+      <h4>Anna Jaison</h4>
+      <span>Creative Lead</span>
+    </div>
+    <div class="member">
+      <div class="avatar"><img src="images/member5.jpeg" alt="Member Name"></div>
+      <h4>Nanma Maryam Soence</h4>
+      <span>Operation Lead</span>
+    </div>
+    <div class="member">
+      <div class="avatar"><img src="images/member6.jpeg" alt="Member Name"></div>
+      <h4>Amanul Farhan</h4>
+      <span>Technical Lead</span>
+    </div>
+    <div class="member">
+      <div class="avatar"><img src="images/member7.jpeg" alt="Member Name"></div>
+      <h4>Kasinathan C G</h4>
+      <span>Media Lead</span>
+    </div>
+    <div class="member">
+      <div class="avatar"><img src="images/member8.jpeg" alt="Member Name"></div>
+      <h4>Hanin C K</h4>
+      <span>Operation Team</span>
+    </div>
+    <div class="member">
+      <div class="avatar"><img src="images/member9.jpeg" alt="Member Name"></div>
+      <h4>Gourinandhan R</h4>
+      <span>Operation Team</span>
+    </div>
+    <div class="member">
+      <div class="avatar"><img src="images/member10.jpeg" alt="Member Name"></div>
+      <h4>Govind J S</h4>
+      <span>Designer</span>
+    </div>
+    <div class="member">
+      <div class="avatar"><img src="images/member11.jpeg" alt="Member Name"></div>
+      <h4>Juhaina Jaleel</h4>
+      <span>Designer</span>
+    </div>
+    <div class="member">
+      <div class="avatar"><img src="images/member12.jpeg" alt="Member Name"></div>
+      <h4>Megha B Chandran</h4>
+      <span>Content Team</span>
+    </div>
+    <div class="member">
+      <div class="avatar"><img src="images/member13.jpeg" alt="Member Name"></div>
+      <h4>Albin Thomas</h4>
+      <span>Content Team</span>
+    </div>
+    <div class="member">
+      <div class="avatar"><img src="images/member14.jpeg" alt="Member Name"></div>
+      <h4>Pavithra A</h4>
+      <span>Media Team</span>
+    </div>
+    <div class="member">
+      <div class="avatar"><img src="images/member15.jpeg" alt="Member Name"></div>
+      <h4>Viswaprabha</h4>
+      <span>IG Lead-IOT</span>
+    </div>
+    <div class="member">
+      <div class="avatar"><img src="images/member16.jpeg" alt="Member Name"></div>
+      <h4>Sanjeev S Nair</h4>
+      <span>IG Lead-UI/UX</span>
+    </div>
+  </div>
+</section>
+
+<!-- CONNECT -->
+<section id="connect" class="section glass center reveal">
+  <h2>Connect With Us</h2>
+  <p>Join our Discord & WhatsApp communities</p>
+  <div class="actions">
+    <a
+  href="https://discord.gg/suGfzrHKt"
+  target="_blank"
+  rel="noopener"
+  class="btn primary">
+  Join Discord
+</a>
+
+    <button class="btn ghost">Join WhatsApp</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <footer class="mulearn-footer">
+  <div class="footer-inner">
+
+    <!-- Brand -->
+    <div class="footer-brand">
+      <h2>µLearn</h2>
+      <p class="footer-email">
+        Reach us at
+        <a href="mailto:gtechmulearncec@gmail.com">
+          gtechmulearncec@gmail.com
+        </a>
+      </p>
+    </div>
+
+    <!-- Links -->
+    <div class="footer-links">
+      <a href="#">µLearn</a>
+      <a href="#">Events</a>
+      <a href="#">Gallery</a>
+      <a href="#">Branding</a>
+    </div>
+
+    <!-- Socials -->
+    <div class="footer-socials">
+     <div class="footer-socials">
+  <a href="https://www.linkedin.com/company/mulearn/"
+     class="social"
+     data-label="LinkedIn"
+     target="_blank">
+    <i class="fa-brands fa-linkedin-in"></i>
+  </a>
+
+  <a href="https://www.instagram.com/mulearn.official/"
+     class="social"
+     data-label="Instagram"
+     target="_blank">
+    <i class="fa-brands fa-instagram"></i>
+  </a>
+
+  <a href="https://twitter.com/mulearn"
+     class="social"
+     data-label="Twitter"
+     target="_blank">
+    <i class="fa-brands fa-x-twitter"></i>
+  </a>
+
+  <a href="https://www.facebook.com/mulearn"
+     class="social"
+     data-label="Facebook"
+     target="_blank">
+    <i class="fa-brands fa-facebook-f"></i>
+  </a>
+</div>
+
+</div>
+
+    </div>
+
+    <!-- Bottom -->
+    <div class="footer-bottom">
+      <span>© 2025. All Rights Reserved.</span>
+      <span>µLearn Foundation</span>
+    </div>
+
+  </div>
+</footer>
+
+<script src="script.js"></script>
+<script>
+(() => {
+  const memories = document.querySelectorAll('.memory-glass');
+  const container = document.querySelector('.memories-container');
+  const centerX = container.clientWidth / 2;
+  const centerY = container.clientHeight / 2;
+
+  let index = 0;
+
+  function moveToCenter(el) {
+    const rect = el.getBoundingClientRect();
+    const parentRect = container.getBoundingClientRect();
+
+    const x = centerX - (rect.width / 2) - (rect.left - parentRect.left);
+    const y = centerY - (rect.height / 2) - (rect.top - parentRect.top);
+
+    el.style.transform = `translate(${x}px, ${y}px) scale(1.15)`;
+    el.classList.add('is-center');
+  }
+
+  function reset(el) {
+    el.style.transform = '';
+    el.classList.remove('is-center');
+  }
+
+  function cycle() {
+    memories.forEach(reset);
+
+    const current = memories[index];
+    moveToCenter(current);
+
+    index = (index + 1) % memories.length;
+  }
+
+  // start AFTER section is visible
+  const observer = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) {
+      cycle();
+      setInterval(cycle, 2800); // 🔥 fast but aesthetic
+      observer.disconnect();
+    }
+  }, { threshold: 0.5 });
+
+  observer.observe(container);
+})();
+</script>
+
+
+
+</body>
+</html>
