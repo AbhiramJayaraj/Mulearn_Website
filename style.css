@@ -2387,6 +2387,61 @@ header {
   .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
 }
 
+/* Mobile nav toggle styles */
+.nav-toggle {
+  display: none; /* shown on small screens */
+  background: transparent;
+  border: none;
+  width: 44px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1200;
+}
+.nav-toggle .bar {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #dff6ff;
+  margin: 3px 0;
+  transition: all 0.2s ease;
+}
+
+/* show toggle on small screens and hide inline nav */
+@media (max-width: 768px) {
+  .nav-toggle { display: flex; }
+  .header-nav { display: none; position: absolute; right: 12px; top: 64px; }
+  .header-nav.open {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: rgba(4,12,22,0.9);
+    padding: 12px 14px;
+    border-radius: 12px;
+    box-shadow: 0 10px 36px rgba(2,11,24,0.6);
+    min-width: 200px;
+  }
+
+  .header-nav a { padding: 8px 6px; display: inline-block; }
+}
+
+/* Event preview overlay on mobile */
+.event-preview.mobile-overlay {
+  position: absolute !important;
+  width: 90% !important;
+  max-width: none !important;
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 80 !important;
+  pointer-events: auto !important;
+  box-shadow: 0 30px 90px rgba(0,0,0,0.6) !important;
+}
+
+/* Ensure mission is a positioned container for absolute overlay */
+.mission { position: relative; }
+
 
 
 
