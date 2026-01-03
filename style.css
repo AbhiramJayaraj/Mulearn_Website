@@ -14,6 +14,12 @@ body > *:not(.space-system) {
   z-index: 1;
 }
 
+/* Enforce desktop layout width so mobile renders same as desktop when viewport is fixed */
+html, body {
+  min-width: 1280px;
+}
+
+
 body {
   font-family: 'Inter', sans-serif;
   background: #020b18;
