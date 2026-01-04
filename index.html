@@ -168,6 +168,9 @@
     const titleEl = preview.querySelector('.preview-title');
     const descEl = preview.querySelector('.preview-desc');
 
+    let activeGlass = null;
+
+
     function positionPreview(missionElem, side) {
       const eventsRect = eventsSection.getBoundingClientRect();
       const missionRect = missionElem.getBoundingClientRect();
@@ -201,13 +204,16 @@
       preview.classList.remove('active', 'from-left', 'from-right', 'mobile-overlay');
       const allGlasses = timelineContainer.querySelectorAll('.mission-glass');
       allGlasses.forEach(g => g.classList.remove('active'));
-      preview.style.top = '';
-      preview.style.left = '';
+      
+      // Clear ALL inline styles to ensure clean state
+      function closePreview() {
+  preview.classList.remove('active', 'from-left', 'from-right', 'mobile-overlay');
 
-      // move preview back to body to keep layout predictable
-      if (preview.parentElement !== document.body) {
-        document.body.appendChild(preview);
-      }
+  if (activeGlass) {
+    activeGlass.classList.remove('active');
+    activeGlass = null;
+  }
+}
     }
 
     function handleMissionGlassClick(e) {
@@ -217,9 +223,14 @@
       e.stopPropagation();
 
       // Remove active class from all glasses
-      const allGlasses = timelineContainer.querySelectorAll('.mission-glass');
-      allGlasses.forEach(g => g.classList.remove('active'));
-      glass.classList.add('active');
+      // Reset previous
+    if (activeGlass && activeGlass !== glass) {
+    activeGlass.classList.remove('active');
+}
+
+    activeGlass = glass;
+    glass.classList.add('active');
+
 
       dateEl.textContent = glass.dataset.date;
       titleEl.textContent = glass.dataset.title;
@@ -238,9 +249,10 @@
         mission.style.position = mission.style.position || 'relative';
 
         // move preview into mission and style as overlay
-        if (preview.parentElement !== mission) {
-          mission.appendChild(preview);
-        }
+        if (!preview.classList.contains('mobile-overlay')) {
+  mission.appendChild(preview);
+}
+
 
         preview.classList.add('mobile-overlay');
         preview.classList.add('active');
@@ -251,9 +263,7 @@
         preview.style.width = '90%';
       } else {
         // Desktop: keep existing behaviour (floating aside)
-        if (preview.parentElement !== document.body && preview.parentElement !== eventsSection) {
-          document.body.appendChild(preview);
-        }
+       
 
         preview.classList.remove('mobile-overlay');
         preview.classList.remove('active');
