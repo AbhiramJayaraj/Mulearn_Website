@@ -19,6 +19,14 @@ html, body {
   min-width: 1280px;
 }
 
+/* Allow mobile to have natural width */
+@media (max-width: 768px) {
+  html, body {
+    min-width: auto;
+    width: 100%;
+  }
+}
+
 
 body {
   font-family: 'Inter', sans-serif;
@@ -144,6 +152,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  align-items: center;
   position: relative;
   padding-top: 31vh;
 }
@@ -2630,5 +2639,54 @@ header {
   .footer-links {
     flex-direction: column;
     gap: 14px;
+  }
+}
+
+
+
+
+@media (max-width: 768px) {
+  .hero {
+    height: 100vh;
+    padding-top: 0;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .hero h1 {
+    font-size: 2.4rem;
+    line-height: 1.2;
+  }
+
+  .subtitle {
+    margin-top: 10px;
+    font-size: 1rem;
+  }
+}
+
+
+
+
+@media (max-width: 768px) {
+  html, body {
+    min-width: 100%;
+    width: 100%;
+  }
+
+  .hero {
+    height: 100vh;
+    padding-top: 0;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .hero h1 {
+    font-size: 2.4rem;
+    line-height: 1.2;
+  }
+
+  .subtitle {
+    margin-top: 10px;
+    font-size: 1rem;
   }
 }
